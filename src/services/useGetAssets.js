@@ -25,8 +25,6 @@ const useGetAsset = () => {
                 expand: 'assigned_to'
             });
     
-            // const data = await response.json();
-            // console.log(data)
             setAssets(response)
     
         } catch (error) {

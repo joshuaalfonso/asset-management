@@ -1,3 +1,4 @@
+import { url } from "../../config/pocketbase";
 import useGetAsset from "../../services/useGetAssets";
 
 
@@ -10,6 +11,8 @@ const ConsumablesTable = () => {
     if (loading) return <span className="loading loading-spinner text-primary"></span>;
 
     if (error) return <div>{error.message || 'Failed to load assets'}</div>;
+
+    const fileUrl = `${url}api/`;
 
     return (
         <div className="overflow-x-auto">
@@ -30,7 +33,7 @@ const ConsumablesTable = () => {
                     <tr key={asset.id}>
                         <th>{index + 1}</th>
                         <td>
-                            <img src={asset.image} width={50}/>
+                            <img src={`${fileUrl}files/${asset.collectionId}/${asset.id}/${asset.image}`} width={50}/>
                         </td>
                         <td>{asset.name}</td>
                         <td>{asset.type}</td>
