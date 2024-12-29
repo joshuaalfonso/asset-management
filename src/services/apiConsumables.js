@@ -6,7 +6,7 @@ export const useGetAsset = async () => {
     try {
 
         const response = await client.collection('asset').getFullList({
-            sort: '-created',
+            sort: 'created',
             requestKey: null,
             expand: 'assigned_to'
         });
@@ -23,17 +23,25 @@ export const useGetAsset = async () => {
 };
 
 
-export const createConsumable = async (newConsumable) => {
+export const createEditConsumable = async (newConsumable, id) => {
+
+    let query = client.collection('asset');
+    let response = null;
 
     try {
-        await client.collection('asset').create(newConsumable);
+        
+        if (!id) response = await query.create(newConsumable);
 
-        return { success: true, message: 'Successfully added!' };
+        if (id) response = await query.update(id, newConsumable);
+
+        if (response.status == 400) throw Error(response.message);
+
+        return { success: true, message: `Successfully ${id ? 'Edited!' : 'Added!'}`, data: response };
     } 
     
     catch (error) {
         console.log(error);
-        return { success: false, message: 'Failed to add transaction.' };
+        throw new Error(error.message || 'Failed to create record');
     }
 
 }
