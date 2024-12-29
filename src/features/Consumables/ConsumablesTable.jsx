@@ -1,16 +1,42 @@
 import { url } from "../../config/pocketbase";
-import useGetAsset from "../../services/useGetAssets";
-
-
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { deleteConsumables, useGetAsset } from "../../services/apiConsumables";
+import { toast } from 'sonner'
 
 const ConsumablesTable = () => {
 
-    const {assets, loading, error} = useGetAsset();
+    const { 
+        data: consumables, 
+        isLoading, 
+        error
+    } = useQuery({
+        queryKey: ['consumables'],
+        queryFn: useGetAsset,
+    });
 
-    if (loading) return <span className="loading loading-spinner text-primary"></span>;
+    const queryClient = useQueryClient();
 
-    if (error) return <div>{error.message || 'Failed to load assets'}</div>;
+    const { 
+        isPending: isDeleting, 
+        mutate 
+    } = useMutation({
+        mutationFn: deleteConsumables,
+        onSuccess: () => {
+            
+            queryClient.invalidateQueries({
+                queryKey: ['consumables']
+            });
+
+            toast.success('Successfully deleted')
+        }, 
+        onError: (err) => {
+            toast.error(err.message)
+        }
+    });
+
+    if (isLoading) return <span className="loading loading-spinner text-primary"></span>;
+
+    if (error) return <div>{error.message || 'Failed to load consumables'}</div>;
 
     const fileUrl = `${url}api/`;
 
@@ -25,19 +51,29 @@ const ConsumablesTable = () => {
                     <th>Name</th>
                     <th>Type</th>
                     <th>Assigned To</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
 
-                {assets.map((asset, index) => (
-                    <tr key={asset.id}>
+                {consumables.map((item, index) => (
+                    <tr key={item.id}>
                         <th>{index + 1}</th>
                         <td>
-                            <img src={`${fileUrl}files/${asset.collectionId}/${asset.id}/${asset.image}`} width={50}/>
+                            <img src={`${fileUrl}files/${item.collectionId}/${item.id}/${item.image}`} width={50}/>
                         </td>
-                        <td>{asset.name}</td>
-                        <td>{asset.type}</td>
-                        <td>{asset.expand?.assigned_to?.name}</td>
+                        <td>{item.name}</td>
+                        <td>{item.type}</td>
+                        <td>{item.expand?.assigned_to?.name}</td>
+                        <td>
+                            <button 
+                                className="btn"
+                                onClick={() => mutate(item.id)} 
+                                disabled={isDeleting}
+                            >
+                                delete
+                            </button>
+                            </td>
                     </tr>
                 ))}
 

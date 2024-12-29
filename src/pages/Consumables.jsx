@@ -1,28 +1,52 @@
 
 import { useForm } from 'react-hook-form';
 import ConsumablesTable from '../features/Consumables/ConsumablesTable'
-import useCreateConsumables from '../services/useCreateConsumables';
+// import useCreateConsumables from '../services/useCreateConsumables';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createConsumable } from '../services/apiConsumables';
+import { toast } from 'sonner';
 
 function Consumables() {
 
-    const { register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
+    const { register, handleSubmit, formState: {errors}, reset} = useForm();
 
-    const {addConsumables} = useCreateConsumables();
+    // const {addConsumables} = useCreateConsumables();
 
-    const onSubmit = async(data) => {
 
-        try {
-            const response = await addConsumables(data);
-            console.log(response);
-        } catch (error) {
-            console.error(error);
+    const queryClient = useQueryClient();
+
+    const {mutate, isPending: isCreating} = useMutation({
+        mutationFn: createConsumable,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['consumables']
+            });
+            toast.success('New consumable successfully created');
+            reset();
+        },
+        onError: (err) => {
+            toast.error(err.message)
         }
+    })
+
+    const onSubmit = (data) => {
+
+        mutate(data)
+
+        // try {
+        //     const response = await addConsumables(data);
+        //     console.log(response);
+        // } catch (error) {
+        //     console.error(error);
+        // }
 
     }
 
     return (
         <>
-        <div>Consumables</div>
+        <div>
+            <h1 className='text-2xl font-semibold'>Consumable</h1>
+        </div>
 
         <ConsumablesTable />
 
@@ -63,7 +87,7 @@ function Consumables() {
             />
             {errors.assigned_to && <div className='text-red-500'>{errors.assigned_to.message}</div>}
 
-            <button className="btn" type='submit' disabled={isSubmitting}>Button</button>
+            <button className="btn" type='submit' disabled={isCreating}>Button</button>
         </form>
 
         </>

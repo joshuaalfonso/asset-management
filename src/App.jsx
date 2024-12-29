@@ -3,24 +3,42 @@ import Dashboard from "./pages/Dashboard";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./AppLayout";
 import Consumables from "./pages/Consumables";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import PurchaseRequest from "./pages/PurchaseRequest";
+import { Toaster } from 'sonner'
 
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 1,
+        }
+    },
+});
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <Routes>
+        <QueryClientProvider client={queryClient}>
 
-                <Route element={<AppLayout />}>
-                
-                    <Route index element={<Navigate replace to={'dashboard'} />}/>
-                    <Route path="dashboard" element={<Dashboard />}/>
-                    <Route path="consumables" element={<Consumables />}/>
+            <ReactQueryDevtools initialIsOpen="false" />
+            <Toaster position="top-right" richColors/>
+            
+            <BrowserRouter>
+                <Routes>
 
-                </Route>
-                <Route path="*" element={<PageNotFound />}/>
-            </Routes>
-        </BrowserRouter>
+                    <Route element={<AppLayout />}>
+                    
+                        <Route index element={<Navigate replace to={'dashboard'} />}/>
+                        <Route path="dashboard" element={<Dashboard />}/>
+                        <Route path="purchase-request" element={<PurchaseRequest />}/>
+                        <Route path="consumables" element={<Consumables />}/>
+
+                    </Route>
+                    <Route path="*" element={<PageNotFound />}/>
+                </Routes>
+            </BrowserRouter>
+        </QueryClientProvider>
     )
 }
 
