@@ -13,6 +13,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
     // if (id) = True and (!id ) = False
     const isEditSession = Boolean(editId);
 
+    // get users list
     const { users, isLoading: isLoadingUsers, error: usersError} = useUsers();
 
     if (usersError) toast(usersError || 'Failed to load users');
@@ -70,54 +71,77 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
     return (
 
         <form 
-            className='flex flex-col gap-4' 
+            className='form-control gap-5' 
             onSubmit={handleSubmit(onSubmit)}
         >
 
-            <input 
-                {...register('name', {
-                    required: 'Name is required'
-                })}
-                type="text"     
-                placeholder="Enter name" 
-                className="input input-bordered w-full max-w-xs" 
-            />
-            {errors.name && <div className='text-red-500 text-sm'>{errors.name.message}</div>}
+            <h3 className="font-bold text-lg"> {isEditSession ? 'Edit Form' : 'Create Form'} </h3>
 
-            <input 
-                {...register('type', {
-                    required: 'Type is required'
-                })}
-                type="text" 
-                placeholder="Enter type" 
-                className="input input-bordered w-full max-w-xs" 
-            />
-            {errors.type && <div className='text-red-500 text-sm'>{errors.type.message}</div>}
+            <div>
+                <div className="label">
+                    <span className="label-text">Name</span>
+                </div>
+                
+                <input 
+                    {...register('name', {
+                        required: 'Name is required'
+                    })}
+                    type="text"     
+                    className="input input-bordered w-full" 
+                    placeholder="Enter name"
+                />
+                {errors.name && <span className='text-red-500 text-sm py-1'>{errors.name.message}</span>}
+            </div>
 
-            <input 
-                {...register('image', {
-                    required: isEditSession ? false : 'Image is required'
-                })}
-                type="file"     
-                accept='image/*'
-                placeholder="Enter image" 
-                className="file-input file-input-bordered w-full max-w-xs"
-            />
-            {errors.image && <div className='text-red-500 text-sm'>{errors.image.message}</div>}
+            <div>
+                <div className="label">
+                    <span className="label-text">Type</span>
+                </div>
 
-            <select 
-                className="select select-bordered w-full max-w-xs"
-                defaultValue={isEditSession ? rowToEdit.assigned_to : ''}
-                {...register('assigned_to', {
-                    required: 'Assigned to is required'
-                })}
-            >
-                <option disabled value="">Pick assigned to</option>
-                {!isLoadingUsers && users.map(user => (
-                    <option key={user.id} value={user.id}>{user.name}</option>
-                ))}
-            </select>
-            {errors.assigned_to && <div className='text-red-500 text-sm'>{errors.assigned_to.message}</div>} 
+                <input 
+                    {...register('type', {
+                        required: 'Type is required'
+                    })}
+                    className="input input-bordered w-full" 
+                    placeholder="Enter type"
+                />
+                {errors.type && <div className='text-red-500 text-sm'>{errors.type.message}</div>}
+            </div>
+
+            <div>
+                <div className="label">
+                    <span className="label-text">Image</span>
+                </div>
+
+                <input 
+                    {...register('image', {
+                        required: isEditSession ? false : 'Image is required'
+                    })}
+                    type="file"     
+                    accept='image/*'
+                    className="file-input file-input-bordered w-full"
+                />
+                {errors.image && <div className='text-red-500 text-sm'>{errors.image.message}</div>}
+            </div>
+
+            <div>
+                <div className="label">
+                    <span className="label-text">Assigned To</span>
+                </div>
+                <select 
+                    className="select select-bordered w-full "
+                    defaultValue={isEditSession ? rowToEdit.assigned_to : ''}
+                    {...register('assigned_to', {
+                        required: 'Assigned to is required'
+                    })}
+                >
+                    <option disabled value="">Pick assigned to</option>
+                    {!isLoadingUsers && users.map(user => (
+                        <option key={user.id} value={user.id}>{user.name}</option>
+                    ))}
+                </select>
+                {errors.assigned_to && <div className='text-red-500 text-sm'>{errors.assigned_to.message}</div>} 
+            </div>
 
 
             <div className="flex justify-end gap-2">

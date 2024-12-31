@@ -42,18 +42,18 @@ const Window = ({children, name}) => {
     if (name !== openName) return null;
 
     return createPortal (
-        <dialog className="modal modal-open">
+        <dialog className="modal modal-open ">
             <div className="modal-box">
-                <h3 className="font-bold text-lg">Create consumable</h3>
+                {/* <h3 className="font-bold text-lg">Create consumable</h3> */}
 
                 {cloneElement(children, {onCloseModal: close})}
 
-                <button 
+                {/* <button 
                     className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
                     onClick={close}
                     >
                     ✕
-                </button>
+                </button> */}
             </div>
         </dialog>,
         document.body
