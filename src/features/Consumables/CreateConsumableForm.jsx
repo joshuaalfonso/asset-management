@@ -1,15 +1,21 @@
 import { useForm } from "react-hook-form";
 import useCreateConsumable from "./useCreateConsumable";
 import useEditConsumable from "./useEditConsumable";
+import useUsers from "../users/useUsers";
+import { toast } from "sonner";
 
 
 // empty object default value
-const CreateConsumableForm = ({ rowToEdit = {} }) => {
+const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => { 
 
     const { id: editId, ...editValues} = rowToEdit;
 
     // if (id) = True and (!id ) = False
     const isEditSession = Boolean(editId);
+
+    const { users, isLoading: isLoadingUsers, error: usersError} = useUsers();
+
+    if (usersError) toast(usersError || 'Failed to load users');
 
     // destructure state and function from useForm
     const { 
@@ -27,6 +33,7 @@ const CreateConsumableForm = ({ rowToEdit = {} }) => {
     const isWorking = isCreating || isEditing;
 
     const onSubmit = (data) => {
+        // console.log(data);
 
         const image = typeof data.image === 'string' ? data.image : data.image[0];
         
@@ -37,7 +44,10 @@ const CreateConsumableForm = ({ rowToEdit = {} }) => {
                     id: editId
                 },
                 {
-                    onSuccess: () => reset()
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal?.();
+                    }
                 }
             )
         }
@@ -48,15 +58,21 @@ const CreateConsumableForm = ({ rowToEdit = {} }) => {
                     image: image
                 },
                 {
-                    onSuccess: () => reset()
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal?.();
+                    }
                 }
             );
         }
     }
 
-
     return (
-        <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
+
+        <form 
+            className='flex flex-col gap-4' 
+            onSubmit={handleSubmit(onSubmit)}
+        >
 
             <input 
                 {...register('name', {
@@ -80,28 +96,46 @@ const CreateConsumableForm = ({ rowToEdit = {} }) => {
 
             <input 
                 {...register('image', {
-                    required: isEditSession ? false : true
+                    required: isEditSession ? false : 'Image is required'
                 })}
                 type="file"     
                 accept='image/*'
                 placeholder="Enter image" 
-                className="file-input w-full max-w-xs"
+                className="file-input file-input-bordered w-full max-w-xs"
             />
             {errors.image && <div className='text-red-500 text-sm'>{errors.image.message}</div>}
 
-            <input 
-                {...register('assigned_to')}
-                type="text"     
-                placeholder="Enter assigned to" 
-                className="input input-bordered w-full max-w-xs" 
-            />
-            {errors.assigned_to && <div className='text-red-500 text-sm'>{errors.assigned_to.message}</div>}
+            <select 
+                className="select select-bordered w-full max-w-xs"
+                defaultValue={isEditSession ? rowToEdit.assigned_to : ''}
+                {...register('assigned_to', {
+                    required: 'Assigned to is required'
+                })}
+            >
+                <option disabled value="">Pick assigned to</option>
+                {!isLoadingUsers && users.map(user => (
+                    <option key={user.id} value={user.id}>{user.name}</option>
+                ))}
+            </select>
+            {errors.assigned_to && <div className='text-red-500 text-sm'>{errors.assigned_to.message}</div>} 
 
-            <button 
-                className="btn" 
-                type='submit' 
-                disabled={isWorking}>{isEditSession ? 'Apply changes' : 'Submit'}
-            </button>
+
+            <div className="flex justify-end gap-2">
+
+                <button 
+                    className="btn text-white" 
+                    type='reset' 
+                    onClick={() => onCloseModal?.()}
+                >Cancel</button>
+
+                <button 
+                    className="btn btn-primary text-white" 
+                    type='submit' 
+                    disabled={isWorking}>{isEditSession ? 'Apply changes' : 'Submit'}
+                </button>
+
+            </div>
+
 
         </form>
     )

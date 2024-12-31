@@ -10,7 +10,7 @@ const ConsumableRow = ({row, index}) => {
     const { id, collectionId, image, name, type} = row;
 
     const [showForm, setShowForm] = useState(false);
-
+ 
     const fileUrl = `${url}api/`;
 
     const {isDeleting, deleteConsumable} = useDeleteConsumable();
@@ -26,6 +26,7 @@ const ConsumableRow = ({row, index}) => {
                 <td>{type}</td>
                 <td>{row.expand?.assigned_to?.name}</td>
                 <td>
+                    <div className="flex gap-3">
                     <button 
                         className="btn"
                         onClick={() => deleteConsumable(id)} 
@@ -39,6 +40,7 @@ const ConsumableRow = ({row, index}) => {
                     >
                         Edit
                     </button>
+                    </div>
                 </td>
             </tr>    
             

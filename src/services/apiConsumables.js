@@ -41,7 +41,7 @@ export const createEditConsumable = async (newConsumable, id) => {
     
     catch (error) {
         console.log(error);
-        throw new Error(error.message || 'Failed to create record');
+        throw new Error(error.message || 'An error occured');
     }
 
 }

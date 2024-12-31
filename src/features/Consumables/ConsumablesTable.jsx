@@ -37,8 +37,10 @@ const ConsumablesTable = () => {
                 </tbody>
                 
             </table>
+
         </div>
     )
 }
 
 export default ConsumablesTable
+
