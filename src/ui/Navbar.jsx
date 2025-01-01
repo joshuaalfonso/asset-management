@@ -10,8 +10,8 @@ const Navbar = () => {
             <div className="flex-1">
                 <a className="btn btn-ghost text-xl hidden">daisyUI</a>
             </div>
-            <div className="flex-none">
-                <button className="btn btn-square btn-ghost">
+            <div className="flex-none px-2">
+                {/* <button className="btn btn-square btn-ghost">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -23,7 +23,12 @@ const Navbar = () => {
                     strokeWidth="2"
                     d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
                 </svg>
-                </button>
+                </button> */}
+                <div className="avatar">
+                    <div className="w-7 rounded-full">
+                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    </div>
+                </div>
             </div>
         </div>
     )

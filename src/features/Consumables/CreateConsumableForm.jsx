@@ -77,11 +77,8 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
 
             <h3 className="font-bold text-lg"> {isEditSession ? 'Edit Form' : 'Create Form'} </h3>
 
-            <div>
-                <div className="label">
-                    <span className="label-text">Name</span>
-                </div>
-                
+            <div className="form-control gap-2">
+                <label className="label-text">Name</label>
                 <input 
                     {...register('name', {
                         required: 'Name is required'
@@ -90,13 +87,11 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     className="input input-bordered w-full" 
                     placeholder="Enter name"
                 />
-                {errors.name && <span className='text-red-500 text-sm py-1'>{errors.name.message}</span>}
+                {errors.name && <span className='text-error text-sm'>{errors.name.message}</span>}
             </div>
 
-            <div>
-                <div className="label">
-                    <span className="label-text">Type</span>
-                </div>
+            <div className="form-control gap-2">
+                <label className="label-text">Type</label>
 
                 <input 
                     {...register('type', {
@@ -105,13 +100,11 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     className="input input-bordered w-full" 
                     placeholder="Enter type"
                 />
-                {errors.type && <div className='text-red-500 text-sm'>{errors.type.message}</div>}
+                {errors.type && <div className='text-error text-sm'>{errors.type.message}</div>}
             </div>
 
-            <div>
-                <div className="label">
-                    <span className="label-text">Image</span>
-                </div>
+            <div className="form-control gap-2">
+                <label className="label-text">Image</label>
 
                 <input 
                     {...register('image', {
@@ -121,13 +114,11 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     accept='image/*'
                     className="file-input file-input-bordered w-full"
                 />
-                {errors.image && <div className='text-red-500 text-sm'>{errors.image.message}</div>}
+                {errors.image && <div className='text-error text-sm'>{errors.image.message}</div>}
             </div>
 
-            <div>
-                <div className="label">
-                    <span className="label-text">Assigned To</span>
-                </div>
+            <div className="form-control gap-2">
+                <label className="label-text">Assigned to</label>
                 <select 
                     className="select select-bordered w-full "
                     defaultValue={isEditSession ? rowToEdit.assigned_to : ''}
@@ -140,22 +131,26 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                         <option key={user.id} value={user.id}>{user.name}</option>
                     ))}
                 </select>
-                {errors.assigned_to && <div className='text-red-500 text-sm'>{errors.assigned_to.message}</div>} 
+                {errors.assigned_to && <div className='text-error text-sm'>{errors.assigned_to.message}</div>} 
             </div>
 
 
             <div className="flex justify-end gap-2">
 
                 <button 
-                    className="btn text-white" 
+                    className={`btn text-white `} 
                     type='reset' 
+                    disabled={isWorking}
                     onClick={() => onCloseModal?.()}
                 >Cancel</button>
 
                 <button 
-                    className="btn btn-primary text-white" 
+                    className={`btn btn-primary text-white ${isWorking && 'cursor-not-allowed'}`} 
                     type='submit' 
-                    disabled={isWorking}>{isEditSession ? 'Apply changes' : 'Submit'}
+                    disabled={isWorking}
+                >
+                        {isWorking && <span className="loading loading-spinner"></span>}
+                        {isEditSession ? 'Apply changes' : 'Submit'}
                 </button>
 
             </div>

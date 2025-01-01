@@ -55,6 +55,7 @@ const ConsumableRow = ({row, index}) => {
                             <Modal.Window name='delete'>
                                 <ConfirmDelete 
                                     resourceName='consumable'
+                                    name={name}
                                     disabled={isDeleting}
                                     onConfirm={() => deleteConsumable(id)}
                                 />
