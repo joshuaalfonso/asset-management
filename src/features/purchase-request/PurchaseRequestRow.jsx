@@ -64,8 +64,8 @@ const PurchaseRequestRow = ({row, index}) => {
                                 const fileUrl = `${url}api/`;
 
                                 return (
-                                    <tr>            
-                                        <div className="flex justify-between bg-base-100 p-3">
+                                    <tr key={prId}>            
+                                        <td className="flex justify-between items-center bg-base-100 rounded-xl p-3">
                                             <div className="flex gap-3">
                                                 <img 
                                                     src={`${fileUrl}files/${itemCollectionId}/${itemId}/${image}`} 
@@ -73,16 +73,16 @@ const PurchaseRequestRow = ({row, index}) => {
                                                     height={50} 
                                                     className="bg-white object-cover rounded"
                                                 />
-                                                <div className="flex flex-col">
-                                                    <span>{itemName}</span>
-                                                    <span>{type}</span>
+                                                <div className="flex flex-col justify-between">
+                                                    <span className="font-semibold tracking-wide">{itemName}</span>
+                                                    <span  className="text-xs">{type}</span>
                                                 </div>
                                             </div>
 
                                             <span>{quantity}</span>
                                             <span>{unitOfMeasure}</span>
                                             <span>{unitPrice}</span>
-                                        </div>
+                                        </td>
                                         
                                     </tr>
                                 )

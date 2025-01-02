@@ -16,8 +16,6 @@ const PurchaseRequestTable = () => {
 
      if (error) return <div> {error.message || 'Failed to load purchase request'} </div>
 
-    console.log(purchaseRequest);
-
     return (
         <>
             <div className="overflow-x-auto">
