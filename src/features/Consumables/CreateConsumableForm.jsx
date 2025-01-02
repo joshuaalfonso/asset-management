@@ -138,14 +138,14 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
             <div className="flex justify-end gap-2">
 
                 <button 
-                    className={`btn text-white `} 
+                    className={`btn  `} 
                     type='reset' 
                     disabled={isWorking}
                     onClick={() => onCloseModal?.()}
                 >Cancel</button>
 
                 <button 
-                    className={`btn btn-primary text-white ${isWorking && 'cursor-not-allowed'}`} 
+                    className={`btn btn-primary text-base-300 ${isWorking && 'cursor-not-allowed'}`} 
                     type='submit' 
                     disabled={isWorking}
                 >

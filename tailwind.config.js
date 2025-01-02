@@ -7,12 +7,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ['Poppins']
+        poppins: ['Poppins'],
+        rubik: ['Rubik Vinyl']
       }
     },
   },
   daisyui: {
-    themes: ["dark"],
+    themes: [
+      {
+        dark: {
+          ...require("daisyui/src/theming/themes")["dark"],
+          'primary': "#38da7d",
+        },
+      },
+    ],
   },
   plugins: [
     require('daisyui'),

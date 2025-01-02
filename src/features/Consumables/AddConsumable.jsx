@@ -11,7 +11,7 @@ const AddConsumable = () => {
         <Modal>
 
             <Modal.Open opens='consumable-form'>
-                <button className="btn btn-primary text-white/80">Add consumable</button>
+                <button className="btn btn-primary text-base-300">Add Consumable</button>
             </Modal.Open>
 
             <Modal.Window name='consumable-form'>
