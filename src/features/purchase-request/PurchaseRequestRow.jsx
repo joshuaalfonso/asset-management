@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { url } from "../../config/pocketbase";
+import { motion } from "framer-motion";
+
 
 const PurchaseRequestRow = ({row, index}) => {
 
@@ -10,6 +13,8 @@ const PurchaseRequestRow = ({row, index}) => {
         expand
     } = row;
 
+    const [showItems, setShowItems] = useState(false);
+
     const formattedDate = new Date(purchaseRequestDate).toLocaleDateString();
 
     return (
@@ -20,8 +25,16 @@ const PurchaseRequestRow = ({row, index}) => {
                     { formattedDate }
                 </td>
                 <td>{purchaseRequestNumber}</td>
-                <td>{status}</td>
+                <td>
+                    {/* {status} */}
+                    {status === 'Pending' && <div className="badge badge-warning lowercase">{status}</div>}
+                    {status === 'Approved' && <div className="badge badge-success lowercase">{status}</div>}
+
+                </td>
                 <td>{totalAmount}</td>
+                <td>
+                    <button className="btn" onClick={() => setShowItems(show => !show)}>collapse</button>
+                </td>
                 {/* <td>
                     <div className="flex gap-3">
 
@@ -37,10 +50,9 @@ const PurchaseRequestRow = ({row, index}) => {
             </tr>      
 
             <tr>
-                <td colSpan={12} className="bg-base-200">
-                    <table className="w-full" >
-
-                        {/* <th>zxc</th>         */}
+                {showItems && (
+                    <td colSpan={12} className="bg-base-200" style={{maxHeight: 0}}>
+                    <table className="w-full">
 
                         <tbody className="flex flex-col gap-3">
 
@@ -93,6 +105,7 @@ const PurchaseRequestRow = ({row, index}) => {
 
                         </table>
                     </td>
+                )}
             </tr>
 
             {/* {expand?.purchaseRequestItems_via_purchaseRequestId.map((prItems) => {
