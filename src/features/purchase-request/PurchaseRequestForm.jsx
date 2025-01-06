@@ -6,10 +6,18 @@ import { useCreatePurchaseRequest } from "./useCreatePurchaseRequest";
 
 const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
 
-
     const { consumables, isLoading: consumablesisLoading, consumablesError } = useConsumables();
 
     if (consumablesError) console.error(consumablesError.message || 'There was an error fetching consumables');
+
+    const { id: editId, ...editValues} = rowToEdit;
+
+    // if (id) = True and (!id ) = False
+    const isEditSession = Boolean(editId);
+
+    const purchaseRequestDate = isEditSession ? new Date(editValues.purchaseRequestDate).toISOString().split('T')[0] : '';
+
+    const purchaseRequestItems = editValues?.expand?.purchaseRequestItems_via_purchaseRequestId;
 
     const {
         register, 
@@ -19,7 +27,9 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
         control
     } = useForm({
         defaultValues: {
-            purchaseRequestItems: [{ item: '', quantity: '', unitPrice: '' }]
+            ...(isEditSession ? editValues : {}),
+            purchaseRequestDate: purchaseRequestDate,
+            purchaseRequestItems: isEditSession ? purchaseRequestItems : [{ item: '', quantity: '', unitPrice: '' }] 
         }
     });
 
