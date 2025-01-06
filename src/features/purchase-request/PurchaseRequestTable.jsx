@@ -18,7 +18,7 @@ const PurchaseRequestTable = () => {
 
     return (
         <>
-            <div className="overflow-x-auto bg-base-200 rounded-md">
+            <div className="overflow-x-auto bg-base-200 rounded-md p-3">
                 <table className="table">
                     {/* head */}
                     <thead>

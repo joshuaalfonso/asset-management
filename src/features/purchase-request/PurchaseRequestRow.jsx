@@ -27,13 +27,13 @@ const PurchaseRequestRow = ({row, index}) => {
                 <td>{purchaseRequestNumber}</td>
                 <td>
                     {/* {status} */}
-                    {status === 'Pending' && <div className="badge badge-warning lowercase">{status}</div>}
-                    {status === 'Approved' && <div className="badge badge-success lowercase">{status}</div>}
+                    {status === 'Pending' && <div className="badge bg-yellow-300/20 text-yellow-400">{status}</div>}
+                    {status === 'Approved' && <div className="badge bg-green-300/20 text-green-400">{status}</div>}
 
-                </td>
+                </td> 
                 <td>{totalAmount}</td>
                 <td>
-                    <button className="btn" onClick={() => setShowItems(show => !show)}>collapse</button>
+                    <button className="btn bg-base-100" onClick={() => setShowItems(show => !show)}>collapse</button>
                 </td>
                 {/* <td>
                     <div className="flex gap-3">

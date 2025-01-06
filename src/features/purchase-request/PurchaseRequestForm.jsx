@@ -1,11 +1,15 @@
 
-import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-
-
+import useConsumables from "../Consumables/useConsumables";
+import { useCreatePurchaseRequest } from "./useCreatePurchaseRequest";
 
 
 const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
+
+
+    const { consumables, isLoading: consumablesisLoading, consumablesError } = useConsumables();
+
+    if (consumablesError) console.error(consumablesError.message || 'There was an error fetching consumables');
 
     const {
         register, 
@@ -15,23 +19,30 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
         control
     } = useForm({
         defaultValues: {
-            purchaseOrderItems: [{ itemName: '', quantity: '', price: '' }]
+            purchaseRequestItems: [{ item: '', quantity: '', unitPrice: '' }]
         }
     });
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "purchaseOrderItems"
+        name: "purchaseRequestItems"
     })
 
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+    const { createPR, isCreating } = useCreatePurchaseRequest();
 
-    const [value, setValue] = useState({ 
-        startDate: null, 
-        endDate: null
-    });
+    const onSubmit = (data) => {
+        // console.log(data);
+
+        createPR(
+            data,
+            {
+                onSuccess: () => {
+                    reset();
+                    onCloseModal?.();
+                }
+            }
+        );
+    }
 
 
     return (
@@ -46,68 +57,123 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
             <div className="form-control gap-2">
                 <label className="label-text">PR #</label>
                 <input 
-                    {...register('name', {
-                        required: 'Name is required'
+                    {...register('purchaseRequestNumber', {
+                        required: 'PR # is required'
                     })}
                     type="text"     
                     className="input input-bordered w-full" 
-                    placeholder="Enter name"
+                    placeholder="Enter PR #"
                 />
-                {errors.name && <span className='text-error text-sm'>{errors.name.message}</span>}
+                {errors.purchaseRequestNumber && <span className='text-error text-sm'>{errors.purchaseRequestNumber.message}</span>}
             </div>
 
 
             <div className="form-control gap-2">
                 <label className="label-text">PR Date</label>
                 <input 
-                    {...register('date', {
+                    {...register('purchaseRequestDate', {
                         required: 'Date is required'
                     })}
                     type="date"     
                     className="input input-bordered w-full" 
                     placeholder="Enter name"
                 />
-                {errors.date && <span className='text-error text-sm'>{errors.date.message}</span>}
+                {errors.purchaseRequestDate && <span className='text-error text-sm'>{errors.purchaseRequestDate.message}</span>}
             </div>
 
-            {fields.map((item, index) => (
-                <div key={item.id}>
-                    <div>
-                        <label>Item Name</label>
-                        <Controller
-                            name={`purchaseOrderItems[${index}].itemName`}
-                            control={control}
-                            render={({ field }) => <input {...field} />}
-                        />
-                    </div>
 
-                    <div>
-                        <label>Quantity</label>
-                        <Controller
-                            name={`purchaseOrderItems[${index}].quantity`}
-                            control={control}
-                            render={({ field }) => <input {...field} type="number" />}
-                        />
-                    </div>
 
-                    <div>
-                        <label>Price</label>
-                        <Controller
-                            name={`purchaseOrderItems[${index}].price`}
-                            control={control}
-                            render={({ field }) => <input {...field} type="number" />}
-                        />
-                    </div>
+            <div className="overflow-x-auto">
+                <table className="table ">
+                    {/* head */}
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <button type="button" onClick={() => remove(index)}>
-                        Remove Item
-                    </button>
-                </div>
-            ))}
+                        {fields.map((item, index) => (
+                            <tr key={item.id}>
+                                <td>
+                                    <Controller
+                                        name={`purchaseRequestItems[${index}].item`}
+                                        control={control}
+                                        rules={{ required: 'Item name is required' }}
+                                        render={({ field, fieldState  }) => (
+                                            <>
+                                                <select 
+                                                    {...field} 
+                                                    className={`select select-bordered w-full ${fieldState?.error && 'select-error'}`}
+                                                >
+                                                    <option disabled value="">Pick item</option>
+                                                    {!consumablesisLoading && consumables.map(consumable => (
+                                                        <option key={consumable.id} value={consumable.id}>{consumable.name}</option>
+                                                    ))}
+                                                </select>
+                                            </>
+                                        )}
+                                    />
+                                </td>
 
-            <button type="button" onClick={() => append({ itemName: '', quantity: '', price: '' })}>
-                Add Item
-            </button>
+                                <td>
+                                    <Controller
+                                        name={`purchaseRequestItems[${index}].quantity`}
+                                        control={control}
+                                        rules={{ required: 'quantity is required' }}
+                                        render={({ field, fieldState }) => (
+                                            <>
+                                                <input 
+                                                    {...field} 
+                                                    type="number" 
+                                                    className={`input input-bordered w-full ${fieldState?.error && 'input-error'}`}
+                                                />
+                                            </>
+                                        )}
+                                    />
+                                </td>
+
+                                <td>
+                                    <Controller
+                                        name={`purchaseRequestItems[${index}].unitPrice`}
+                                        control={control}
+                                        rules={{ required: 'price is required' }}
+                                        render={({ field, fieldState }) => (
+                                            <>
+                                                <input 
+                                                    {...field} 
+                                                    type="number" 
+                                                    className={`input input-bordered w-full ${fieldState?.error && 'input-error'}`}
+                                                />
+                                            </>
+                                        )}
+                                    />
+                                </td>
+
+                                <td>
+                                    <button type="button" className="btn" onClick={() => remove(index)}>
+                                        <i className="fi fi-rr-trash text-xl flex"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div className="flex justify-start">
+                <button 
+                    type="button" 
+                    className="btn btn-ghost" 
+                    onClick={() => append({ item: '', quantity: '', unitPrice: '' })}
+                >
+                    Add Item
+                </button>
+            </div>
 
 
             <div className="flex justify-end gap-2">
@@ -116,11 +182,15 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                     className={`btn  `} 
                     type='reset' 
                     onClick={() => onCloseModal?.()}
-                >Cancel</button>
+                    disabled={isCreating}
+                > 
+                    Cancel
+                </button>
 
                 <button 
                     className={`btn btn-primary text-base-300 `} 
                     type='submit' 
+                    disabled={isCreating}
                 >
                          Submit
                 </button>

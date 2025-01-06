@@ -22,3 +22,36 @@ export const getPurchaseRequest = async () => {
     } 
 
 };
+
+
+export const createPurchaseRequest = async (newPurchaseRequest) => {
+
+    try {   
+
+        const response = await client.collection('purchaseRequest').create({...newPurchaseRequest, status: 'Pending'});
+
+        if (response.code === 400) throw error(response.message);
+
+        const prId = response.id;
+
+        const newPRItems = newPurchaseRequest?.purchaseRequestItems.map(item => (
+            item = {...item, purchaseRequestId: prId, unitOfMeasure: 'pcs', description: 'test'} 
+        ))
+
+        const batch = client.createBatch();
+
+        for (const item of newPRItems) {
+            batch.collection('purchaseRequestItems').create(item);
+        }
+
+        const result = await batch.send();
+
+        return {success: true, message: 'Successfully added!', data: result};
+    }
+
+    catch (error) {
+        console.log(error);
+        throw new Error(error.message || 'An error occured');
+    }
+
+}

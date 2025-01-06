@@ -35,7 +35,7 @@ const Open = ({children, opens: opensWindowName}) => {
 }
 
 
-const Window = ({children, name}) => {
+const Window = ({children, name, maxWidth}) => {
     
 
     const {openName, close} = useContext(ModalContext);
@@ -83,7 +83,7 @@ const Window = ({children, name}) => {
                             duration: 0.1,
                         },
                     }}
-                    className="modal-box"
+                    className={`modal-box ${maxWidth && maxWidth}`}
                 >
 
                     {cloneElement(children, {onCloseModal: close})}

@@ -14,7 +14,7 @@ const AddPurchaseRequest = () => {
                 <button className="btn btn-primary text-base-300">Add Purchase Request</button>
             </Modal.Open>
 
-            <Modal.Window name='pr-form'>
+            <Modal.Window name='pr-form' maxWidth='max-w-5xl'>
                     <PurchaseRequestForm />
             </Modal.Window>
 
