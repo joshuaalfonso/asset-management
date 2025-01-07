@@ -28,6 +28,7 @@ const PurchaseRequestTable = () => {
                         <th>PR #</th>
                         <th>Status</th>
                         <th>Total Amount</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>

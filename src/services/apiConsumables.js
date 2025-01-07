@@ -25,7 +25,7 @@ export const useGetAsset = async () => {
 
 export const createEditConsumable = async (newConsumable, id) => {
 
-    let query = client.collection('asset');
+    const query = client.collection('asset');
     let response = null;
 
     try {

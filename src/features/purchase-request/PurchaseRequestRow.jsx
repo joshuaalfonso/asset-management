@@ -35,21 +35,27 @@ const PurchaseRequestRow = ({row, index}) => {
                 </td> 
                 <td>{totalAmount}</td>
                 <td>
-                    <button className="btn bg-base-100" onClick={() => setShowItems(show => !show)}>collapse</button>
-                </td>
-                <td>
                     <div className="flex gap-3">
 
+                    <button 
+                        className="btn bg-base-100" 
+                        onClick={() => setShowItems(show => !show)}
+                    >
+                       {showItems ? (
+                            <i className="fi fi-rr-angle-small-up"></i>
+                        ): <i className="fi fi-rr-angle-small-down"></i>}
+                    </button>
+
                     <Modal>
-                        <Modal.Open opens='edit'>
+                        <Modal.Open opens='edit-pr'>
                             <button 
-                                className="btn"
+                                className="btn bg-base-100" 
                             >
                                 Edit
                             </button>
                         </Modal.Open>
 
-                        <Modal.Window name='edit' maxWidth='max-w-5xl'>
+                        <Modal.Window name='edit-pr' maxWidth='max-w-5xl'>
                             <PurchaseRequestForm rowToEdit={row}/>
                         </Modal.Window>
                     </Modal>

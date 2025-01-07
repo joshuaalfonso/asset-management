@@ -54,6 +54,19 @@ const SideBar = () => {
                             </ul>
                         </details>
                     </li>
+                    <li>
+                        <details open>
+                            <summary className="tracking-wide">Others</summary>
+                            <ul>
+                                <li>
+                                    <NavLink to="/unit-of-measure">
+                                        <i className="fi fi-rs-measuring-tape flex" style={{ fontSize: '17px' }}></i>
+                                        <span className="tracking-wide">Unit of Measure</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
                 </ul>
             </div>
       </aside>

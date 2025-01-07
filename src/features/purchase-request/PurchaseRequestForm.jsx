@@ -2,6 +2,7 @@
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import useConsumables from "../Consumables/useConsumables";
 import { useCreatePurchaseRequest } from "./useCreatePurchaseRequest";
+import { useEditPurchaseRequest } from "./useEditPurchaseRequest";
 
 
 const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
@@ -40,20 +41,44 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
 
     const { createPR, isCreating } = useCreatePurchaseRequest();
 
+    const { editPurchaseRequest, isEditing } = useEditPurchaseRequest();
+
+    const isWorking = isCreating || isEditing;
+
     const onSubmit = (data) => {
         // console.log(data);
 
-        createPR(
-            data,
-            {
-                onSuccess: () => {
-                    reset();
-                    onCloseModal?.();
-                }
-            }
-        );
-    }
+        if (isEditSession) {
 
+            editPurchaseRequest(
+                {
+                    newPurchaseRequest: {...data},
+                    id: editId
+                },
+                {
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal?.();
+                    }
+                }
+            )
+
+        } else {
+
+            createPR(
+                data,
+                {
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal?.();
+                    }
+                }
+            );
+            
+        }
+
+
+    }
 
     return (
 
@@ -62,7 +87,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
             onSubmit={handleSubmit(onSubmit)}
         >
 
-            <h3 className="font-bold text-lg"> { 'Create Form'} </h3>
+            <h3 className="font-bold text-lg"> { isEditSession ? 'Edit Form' : 'Create Form'} </h3>
 
             <div className="form-control gap-2">
                 <label className="label-text">PR #</label>
@@ -186,13 +211,13 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
             </div>
 
 
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-3">
 
                 <button 
                     className={`btn  `} 
                     type='reset' 
                     onClick={() => onCloseModal?.()}
-                    disabled={isCreating}
+                    disabled={isWorking}
                 > 
                     Cancel
                 </button>
@@ -200,9 +225,10 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                 <button 
                     className={`btn btn-primary text-base-300 `} 
                     type='submit' 
-                    disabled={isCreating}
+                    disabled={isWorking}
                 >
-                         Submit
+                    {isWorking && <span className="loading loading-spinner"></span>}
+                    {isEditSession ? 'Apply changes' : 'Create'}
                 </button>
 
             </div>

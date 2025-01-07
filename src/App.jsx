@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import PurchaseRequest from "./pages/PurchaseRequest";
 import { Toaster } from 'sonner'
+import { UnitOfMeasure } from "./pages/UnitOfMeasure";
 
 
 const queryClient = new QueryClient({
@@ -33,6 +34,7 @@ const App = () => {
                         <Route path="dashboard" element={<Dashboard />}/>
                         <Route path="purchase-request" element={<PurchaseRequest />}/>
                         <Route path="consumables" element={<Consumables />}/>
+                        <Route path="unit-of-measure" element={<UnitOfMeasure />}/>
 
                     </Route>
                     <Route path="*" element={<PageNotFound />}/>

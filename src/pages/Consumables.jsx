@@ -5,7 +5,7 @@ function Consumables() {
 
     return (
         <>
-            <div className='flex justify-between'>
+            <div className='flex justify-between items-center'>
                 <h1 className='text-2xl font-semibold'>Consumable</h1>
                 <AddConsumable />
             </div>

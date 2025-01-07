@@ -55,3 +55,38 @@ export const createPurchaseRequest = async (newPurchaseRequest) => {
     }
 
 }
+
+export const updatePurchaseRequest = async (newPurchaseRequest, id) => {
+
+    const response = await client.collection('purchaseRequest').update(id, newPurchaseRequest);
+
+    if (response.code === 400) throw error(response.message);
+
+    const batch = client.createBatch();
+
+    const updatedPRItems = newPurchaseRequest.purchaseRequestItems;
+
+    for (const item of updatedPRItems) {
+        if (item.id) {
+            batch.collection('purchaseRequestItems').update(item.id, item);
+        } else {
+            batch.collection('purchaseRequestItems').create({...item, purchaseRequestId: id});
+        }
+    }
+
+    const existingItems = await client.collection('purchaseRequestItems').getFullList(200, { filter: `purchaseRequestId = "${id}"` });
+
+    const deletedItems = existingItems.filter(existingItem => 
+        !updatedPRItems.some(newItem => newItem.id === existingItem.id)
+    );
+
+    for (const item of deletedItems) {
+        batch.collection('PurchaseRequestItems').delete(item.id);
+    }
+
+    const result = await batch.send();
+
+    return {success: true, message: 'Successfully updated!', data: result};
+
+}
+
