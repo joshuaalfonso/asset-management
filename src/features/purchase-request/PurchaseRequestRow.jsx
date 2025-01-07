@@ -21,7 +21,7 @@ const PurchaseRequestRow = ({row, index}) => {
 
     return (
         <>
-            <tr>
+            <tr> 
                 <th>{index + 1}</th>
                 <td>
                     { formattedDate }

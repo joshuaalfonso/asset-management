@@ -1,8 +1,9 @@
 
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import useConsumables from "../Consumables/useConsumables";
 import { useCreatePurchaseRequest } from "./useCreatePurchaseRequest";
 import { useEditPurchaseRequest } from "./useEditPurchaseRequest";
+import { useEffect } from "react";
 
 
 const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
@@ -18,19 +19,20 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
 
     const purchaseRequestDate = isEditSession ? new Date(editValues.purchaseRequestDate).toISOString().split('T')[0] : '';
 
-    const purchaseRequestItems = editValues?.expand?.purchaseRequestItems_via_purchaseRequestId;
+    const PRItems = editValues?.expand?.purchaseRequestItems_via_purchaseRequestId;
 
     const {
         register, 
         handleSubmit,
         formState: {errors}, 
         reset,
-        control
+        control,
+        setValue
     } = useForm({
         defaultValues: {
             ...(isEditSession ? editValues : {}),
             purchaseRequestDate: purchaseRequestDate,
-            purchaseRequestItems: isEditSession ? purchaseRequestItems : [{ item: '', quantity: '', unitPrice: '' }] 
+            purchaseRequestItems: isEditSession ? PRItems : [{ item: '', quantity: '', unitPrice: '' }] 
         }
     });
 
@@ -38,6 +40,31 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
         control,
         name: "purchaseRequestItems"
     })
+
+    // Watching quantity, unitPrice, and totalQuantity
+    const [purchaseRequestItems] = useWatch({
+        control,
+        name: ["purchaseRequestItems"]
+    });
+
+    useEffect(() => {
+        let totalQuantity = 0;
+        let totalAmount = 0;
+
+        purchaseRequestItems.forEach((item) => {
+            const quantity = parseFloat(item.quantity) || 0;
+            const price = parseFloat(item.unitPrice) || 0;
+            const totalItemPrice = quantity * price;
+
+            totalQuantity += quantity;
+            totalAmount += totalItemPrice;
+
+            setValue('totalQuantity', totalQuantity);
+            setValue('totalAmount', totalAmount);
+        })
+
+    }, [purchaseRequestItems, setValue])
+
 
     const { createPR, isCreating } = useCreatePurchaseRequest();
 
@@ -89,34 +116,33 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
 
             <h3 className="font-bold text-lg"> { isEditSession ? 'Edit Form' : 'Create Form'} </h3>
 
-            <div className="form-control gap-2">
-                <label className="label-text">PR #</label>
-                <input 
-                    {...register('purchaseRequestNumber', {
-                        required: 'PR # is required'
-                    })}
-                    type="text"     
-                    className="input input-bordered w-full" 
-                    placeholder="Enter PR #"
-                />
-                {errors.purchaseRequestNumber && <span className='text-error text-sm'>{errors.purchaseRequestNumber.message}</span>}
+            <div className="grid grid-cols-2 gap-4">
+                <div className="form-control gap-2">
+                    <label className="label-text">PR Date</label>
+                    <input 
+                        {...register('purchaseRequestDate', {
+                            required: 'Date is required'
+                        })}
+                        type="date"     
+                        className="input input-bordered w-full" 
+                        placeholder="Enter name"
+                    />
+                    {errors.purchaseRequestDate && <span className='text-error text-sm'>{errors.purchaseRequestDate.message}</span>}
+                </div>
+
+                <div className="form-control gap-2">
+                    <label className="label-text">PR #</label>
+                    <input 
+                        {...register('purchaseRequestNumber', {
+                            required: 'PR # is required'
+                        })}
+                        type="text"     
+                        className="input input-bordered w-full" 
+                        placeholder="Enter PR #"
+                    />
+                    {errors.purchaseRequestNumber && <span className='text-error text-sm'>{errors.purchaseRequestNumber.message}</span>}
+                </div>
             </div>
-
-
-            <div className="form-control gap-2">
-                <label className="label-text">PR Date</label>
-                <input 
-                    {...register('purchaseRequestDate', {
-                        required: 'Date is required'
-                    })}
-                    type="date"     
-                    className="input input-bordered w-full" 
-                    placeholder="Enter name"
-                />
-                {errors.purchaseRequestDate && <span className='text-error text-sm'>{errors.purchaseRequestDate.message}</span>}
-            </div>
-
-
 
             <div className="overflow-x-auto">
                 <table className="table ">
@@ -164,6 +190,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                                                 <input 
                                                     {...field} 
                                                     type="number" 
+                                                    placeholder="Enter quantity"
                                                     className={`input input-bordered w-full ${fieldState?.error && 'input-error'}`}
                                                 />
                                             </>
@@ -181,6 +208,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                                                 <input 
                                                     {...field} 
                                                     type="number" 
+                                                    placeholder="Enter price"
                                                     className={`input input-bordered w-full ${fieldState?.error && 'input-error'}`}
                                                 />
                                             </>
@@ -189,7 +217,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                                 </td>
 
                                 <td>
-                                    <button type="button" className="btn" onClick={() => remove(index)}>
+                                    <button type="button" className="btn hover:bg-error hover:text-white" onClick={() => remove(index)}>
                                         <i className="fi fi-rr-trash text-xl flex"></i>
                                     </button>
                                 </td>
@@ -203,13 +231,36 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
             <div className="flex justify-start">
                 <button 
                     type="button" 
-                    className="btn btn-ghost" 
+                    className="btn hover:bg-primary hover:text-white" 
                     onClick={() => append({ item: '', quantity: '', unitPrice: '' })}
                 >
-                    Add Item
+                    <i className="fi fi-rr-plus-small flex text-2xl"></i>
                 </button>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+
+                <div className="form-control gap-2">
+                    <label className="label-text">Total Quantity</label>
+                    <input 
+                        {...register('totalQuantity')}
+                        type="number"     
+                        className="input input-bordered w-full" 
+                        disabled={true}
+                    />
+                </div>
+
+                <div className="form-control gap-2">
+                    <label className="label-text">Total Amount</label>
+                    <input 
+                        {...register('totalAmount')}
+                        type="number"     
+                        className="input input-bordered w-full" 
+                        disabled={true}
+                    />
+                </div>
+
+            </div>
 
             <div className="flex justify-end gap-3">
 
