@@ -22,7 +22,7 @@ const ConsumableRow = ({row, index}) => {
             <tr>
                 <th>{index + 1}</th>
                 <td>
-                    <img src={`${fileUrl}files/${collectionId}/${id}/${image}`} width={50}/>
+                    <img src={`${fileUrl}files/${collectionId}/${id}/${image}`} width={50} height={50} className="bg-base-content rounded object-cover"/>
                 </td>
                 <td>{name}</td>
                 <td>{type}</td>

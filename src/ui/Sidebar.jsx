@@ -26,7 +26,7 @@ const SideBar = () => {
                     <li>
                         <NavLink to="/dashboard" className="font-poppins">
                             <i className="fi fi-rr-objects-column flex" style={{ fontSize: '17px' }}></i>
-                            <span className="tracking-wide">Dashboard</span>
+                            <span className="tracking-wide" >Dashboard</span>
                         </NavLink>
                     </li>
                     <li>

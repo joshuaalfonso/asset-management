@@ -2,11 +2,6 @@ import PurchaseRequestRow from "./PurchaseRequestRow";
 import usePurchaseRequest from "./usePurchaseRequest";
 
 
-
-
-
-
-
 const PurchaseRequestTable = () => {
 
 

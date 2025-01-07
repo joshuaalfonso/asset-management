@@ -124,31 +124,6 @@ const PurchaseRequestRow = ({row, index}) => {
                 )}
             </tr>
 
-            {/* {expand?.purchaseRequestItems_via_purchaseRequestId.map((prItems) => {
-
-                const {
-                    id: itemId, 
-                    image, 
-                    name: itemName, 
-                    type,
-                    collectionId: itemCollectionId, 
-                } = prItems?.expand?.item;
-
-                const fileUrl = `${url}api/`;
-
-                return (
-                    <tr>
-                        <td colSpan={12} className="bg-base-200">
-                            <div className="flex justify-between">
-                            <img src={`${fileUrl}files/${itemCollectionId}/${itemId}/${image}`} width={50}/>
-                            <span>{itemName}</span>
-                            <span>{type}</span>
-                            </div>
-                        </td>
-                    </tr>
-                )
-            })} */}
-
         </>
     )
 }
