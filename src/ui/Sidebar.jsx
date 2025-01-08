@@ -26,7 +26,7 @@ const SideBar = () => {
                     <li>
                         <NavLink to="/dashboard" className="font-poppins">
                             <i className="fi fi-rr-objects-column flex" style={{ fontSize: '17px' }}></i>
-                            <span className="tracking-wide" >Dashboard</span>
+                            <span className="tracking-wide">Dashboard</span>
                         </NavLink>
                     </li>
                     <li>
@@ -38,7 +38,7 @@ const SideBar = () => {
                     <li>
                         <details open>
                             <summary className="tracking-wide">Asset</summary>
-                            <ul>
+                            <ul className="flex flex-col gap-2">
                                 <li>
                                     <NavLink to="/consumables">
                                         <i className="fi fi-rs-quill-pen-story flex" style={{ fontSize: '17px' }}></i>
@@ -57,16 +57,23 @@ const SideBar = () => {
                     <li>
                         <details open>
                             <summary className="tracking-wide">Others</summary>
-                            <ul>
+                            <ul className="flex flex-col gap-2">
                                 <li>
                                     <NavLink to="/unit-of-measure">
                                         <i className="fi fi-rs-measuring-tape flex" style={{ fontSize: '17px' }}></i>
                                         <span className="tracking-wide">Unit of Measure</span>
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <NavLink to="/category">
+                                        <i className="fi fi-rs-category flex" style={{ fontSize: '17px' }}></i>
+                                        <span className="tracking-wide">Category</span>
+                                    </NavLink>
+                                </li>
                             </ul>
                         </details>
                     </li>
+                    
                 </ul>
             </div>
       </aside>

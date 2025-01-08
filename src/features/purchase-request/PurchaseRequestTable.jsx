@@ -1,3 +1,5 @@
+import { AlertMessage } from "../../ui/AlertMessage";
+import { LoaderSpinner } from "../../ui/LoadingSpinner";
 import PurchaseRequestRow from "./PurchaseRequestRow";
 import usePurchaseRequest from "./usePurchaseRequest";
 
@@ -5,11 +7,11 @@ import usePurchaseRequest from "./usePurchaseRequest";
 const PurchaseRequestTable = () => {
 
 
-     const { purchaseRequest, isLoading, error } = usePurchaseRequest();
+     const { purchaseRequest, isLoading , error } = usePurchaseRequest();
 
-     if (isLoading) return <div>Loading...</div>;
+     if (isLoading) return <LoaderSpinner />;
 
-     if (error) return <div> {error.message || 'Failed to load purchase request'} </div>
+     if (error) return <AlertMessage message={error.message} />
 
     return (
         <>

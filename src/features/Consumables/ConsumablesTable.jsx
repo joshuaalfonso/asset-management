@@ -1,4 +1,6 @@
 
+import { AlertMessage } from "../../ui/AlertMessage";
+import { LoaderSpinner } from "../../ui/LoadingSpinner";
 import ConsumableRow from "./ConsumableRow";
 import useConsumables from "./useConsumables";
 
@@ -6,9 +8,9 @@ const ConsumablesTable = () => {
 
     const { consumables, isLoading, error } = useConsumables();
 
-    if (isLoading) return <span className="loading loading-spinner text-primary"></span>;
+    if (isLoading) return <LoaderSpinner />;
 
-    if (error) return <div>{error.message || 'Failed to load consumables'}</div>;
+    if (error) return <AlertMessage message={error.message} />
 
     return (
         <div className="overflow-x-auto">
@@ -17,8 +19,8 @@ const ConsumablesTable = () => {
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Image</th>
                     <th>Name</th>
+                    <th>UoM</th>
                     <th>Type</th>
                     <th>Assigned To</th>
                     <th></th>

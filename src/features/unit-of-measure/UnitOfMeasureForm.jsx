@@ -63,27 +63,27 @@ export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
                 <div className="form-control gap-2">
                     <label className="label-text">Code</label>
                     <input 
-                        {...register('code', {
+                        {...register('uomCode', {
                             required: 'Code is required'
                         })}
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter code"
                     />
-                    {errors?.code && <span className='text-error text-sm'>{errors?.code.message}</span>}
+                    {errors?.uomCode && <span className='text-error text-sm'>{errors?.uomCode.message}</span>}
                 </div>
 
                 <div className="form-control gap-2">
                     <label className="label-text">Name</label>
                     <input 
-                        {...register('name', {
+                        {...register('uomName', {
                             required: 'Name is required'
                         })}
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter name"
                     />
-                    {errors?.name && <span className='text-error text-sm'>{errors?.name.message}</span>}
+                    {errors?.uomName && <span className='text-error text-sm'>{errors?.uomName.message}</span>}
                 </div>
 
                 <div className="flex justify-end items-center gap-3">
@@ -92,6 +92,7 @@ export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
                     </button>
 
                     <button className="btn btn-primary text-base-300" type='submit' disabled={isWorking}>
+                        {isWorking && <span className="loading loading-spinner"></span>}
                         {isEditSession ? 'Apply changes' : 'Create'}
                     </button>
                 </div>

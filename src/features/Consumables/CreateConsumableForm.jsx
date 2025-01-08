@@ -3,6 +3,8 @@ import useCreateConsumable from "./useCreateConsumable";
 import useEditConsumable from "./useEditConsumable";
 import useUsers from "../users/useUsers";
 import { toast } from "sonner";
+import { useCategory } from "../category/useCategory";
+import { useUnitOfMeasure } from "../unit-of-measure/useUnitOfMeasure";
 
 
 // empty object default value
@@ -16,7 +18,13 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
     // get users list
     const { users, isLoading: isLoadingUsers, error: usersError} = useUsers();
 
-    if (usersError) toast(usersError || 'Failed to load users');
+    // get category list
+    const { category, isLoading: isLoadingCategory, error: categoryError } = useCategory();
+
+    const { unitOfMeasure, isLoading:isLoadingUoM, error: uomError } = useUnitOfMeasure();
+
+    if (usersError) toast.error(usersError.message || 'Failed to load users');
+    if (uomError) toast.error(uomError.message || 'Failed to load Unit of Measure');
 
     // destructure state and function from useForm
     const { 
@@ -90,6 +98,41 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                 {errors.name && <span className='text-error text-sm'>{errors.name.message}</span>}
             </div>
 
+
+            <div className="form-control gap-2">
+                <label className="label-text">Category</label>
+                <select 
+                    className="select select-bordered w-full "
+                    defaultValue={isEditSession ? rowToEdit.categoryId : ''}
+                    {...register('categoryId', {
+                        required: 'Category to is required'
+                    })}
+                >
+                    <option disabled value="">Pick category</option>
+                    {!isLoadingCategory && !categoryError && category.map(row => (
+                        <option key={row.id} value={row.id}>{row.categoryName}</option>
+                    ))}
+                </select>
+                {errors.categoryId && <div className='text-error text-sm'>{errors.categoryId.message}</div>} 
+            </div>
+
+            <div className="form-control gap-2">
+                <label className="label-text">Unit of Measure</label>
+                <select 
+                    className="select select-bordered w-full "
+                    defaultValue={isEditSession ? rowToEdit.unitOfMeasureId : ''}
+                    {...register('unitOfMeasureId', {
+                        required: 'Unit of Measure is required'
+                    })}
+                >
+                    <option disabled value="">Pick UoM</option>
+                    {!isLoadingUoM && !uomError && unitOfMeasure.map(row => (
+                        <option key={row.id} value={row.id}>{row.uomCode}</option>
+                    ))}
+                </select>
+                {errors.unitOfMeasureId && <div className='text-error text-sm'>{errors.unitOfMeasureId.message}</div>} 
+            </div>
+
             <div className="form-control gap-2">
                 <label className="label-text">Type</label>
 
@@ -127,7 +170,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     })}
                 >
                     <option disabled value="">Pick assigned to</option>
-                    {!isLoadingUsers && users.map(user => (
+                    {!isLoadingUsers && !usersError && users.map(user => (
                         <option key={user.id} value={user.id}>{user.name}</option>
                     ))}
                 </select>

@@ -1,21 +1,17 @@
-
-import { useQuery } from "@tanstack/react-query";
-import { getUnitOfMeasure } from "../../services/apiUnitOfMeasure";
 import { UnitOfMeasureRow } from "./UnitOfMeasureRow";
+import { LoaderSpinner } from "../../ui/LoadingSpinner";
+import { AlertMessage } from "../../ui/AlertMessage";
+import { useUnitOfMeasure } from "./useUnitOfMeasure";
 
 
 export const UnitOfMeasureTable = () => {
 
-    const { 
-        data: unitOfMeasure, 
-        isLoading, 
-        error
-    } = useQuery({
-        queryKey: ['unitOfMeasure'],
-        queryFn: getUnitOfMeasure,
-    });
+    
+    const { unitOfMeasure, isLoading, error } = useUnitOfMeasure();
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <LoaderSpinner />;
+
+    if (error) return <AlertMessage message={error.message} />
 
     return (
 

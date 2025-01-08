@@ -8,7 +8,7 @@ export const useGetAsset = async () => {
         const response = await client.collection('asset').getFullList({
             sort: 'created',
             requestKey: null,
-            expand: 'assigned_to'
+            expand: 'assigned_to, categoryId, unitOfMeasureId' 
         });
 
         return response;

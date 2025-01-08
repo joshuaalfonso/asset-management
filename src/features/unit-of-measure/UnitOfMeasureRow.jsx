@@ -12,8 +12,8 @@ export const UnitOfMeasureRow = ({ row, index }) => {
     return (
         <tr>
             <td> {index + 1} </td>
-            <td>{row.code}</td>
-            <td>{row.name}</td>
+            <td>{row.uomCode}</td>
+            <td>{row.uomName}</td>
             <td>
                 
                 <div className="flex items-center gap-3">
