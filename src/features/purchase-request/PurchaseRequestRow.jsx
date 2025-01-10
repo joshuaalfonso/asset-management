@@ -33,7 +33,7 @@ const PurchaseRequestRow = ({row, index}) => {
                     {status === 'Approved' && <div className="badge bg-green-300/10 text-green-400">{status}</div>}
 
                 </td> 
-                <td>{totalAmount}</td>
+                <td>₱ {totalAmount}</td>
                 <td>
                     <div className="flex gap-3">
 
@@ -94,7 +94,7 @@ const PurchaseRequestRow = ({row, index}) => {
 
                                 return (
                                     <tr key={prId} className="">            
-                                        <td className="grid grid-cols-4 items-center bg-base-100 rounded-xl p-3">
+                                        <td className="grid grid-cols-3 items-center bg-base-100 rounded-xl p-3">
                                             {/* <div className="flex gap-3">
                                                 <img 
                                                     src={`${fileUrl}files/${itemCollectionId}/${itemId}/${image}`} 
@@ -123,9 +123,13 @@ const PurchaseRequestRow = ({row, index}) => {
                                                 </div>
                                             </div>
 
-                                            <span>{quantity}</span>
-                                            <span>{expand?.unitOfMeasureId?.uomCode}</span>
-                                            <span>{unitPrice}</span>
+                                            <span>
+                                                <kbd className="kbd">
+                                                    {quantity} {expand?.unitOfMeasureId?.uomCode}
+                                                </kbd>
+                                            </span>
+
+                                            <span>₱ {unitPrice}</span>
                                         </td>
                                         
                                     </tr>

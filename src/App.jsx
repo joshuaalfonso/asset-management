@@ -9,6 +9,7 @@ import PurchaseRequest from "./pages/PurchaseRequest";
 import { Toaster } from 'sonner'
 import { UnitOfMeasure } from "./pages/UnitOfMeasure";
 import Category from "./pages/Category";
+import Department from "./pages/Department";
 
 
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ const App = () => {
                         <Route path="consumables" element={<Consumables />}/>
                         <Route path="unit-of-measure" element={<UnitOfMeasure />}/>
                         <Route path="category" element={<Category />}/>
+                        <Route path="department" element={<Department />}/>
 
                     </Route>
                     <Route path="*" element={<PageNotFound />}/>

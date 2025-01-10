@@ -5,7 +5,7 @@
 
 
 
-const Button = ({btnType = '', onClick, isWorking, isEditSession}) => {
+const Button = ({btnType = '', onClick, isWorking, isEditSession, children}) => {
     
     if (btnType == 'cancel') return (
         <button 
@@ -18,11 +18,16 @@ const Button = ({btnType = '', onClick, isWorking, isEditSession}) => {
         </button>
     );
 
-
     if (btnType == 'submit') return (
         <button className="btn btn-primary text-base-300" type='submit' disabled={isWorking}>
             {isWorking && <span className="loading loading-spinner"></span>}
             {isEditSession ? 'Apply changes' : 'Create'}
+        </button>
+    )
+
+    if (btnType == 'primary') return (
+        <button className="btn btn-primary text-base-300"  disabled={isWorking}>
+            {children}
         </button>
     )
 

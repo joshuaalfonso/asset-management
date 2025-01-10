@@ -95,6 +95,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     type="text"     
                     className="input input-bordered w-full" 
                     placeholder="Enter name"
+                    disabled={isWorking}
                 />
                 {errors.name && <span className='text-error text-sm'>{errors.name.message}</span>}
             </div>
@@ -108,6 +109,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     {...register('categoryId', {
                         required: 'Category to is required'
                     })}
+                    disabled={isWorking}
                 >
                     <option disabled value="">Pick category</option>
                     {!isLoadingCategory && !categoryError && category.map(row => (
@@ -125,6 +127,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     {...register('unitOfMeasureId', {
                         required: 'Unit of Measure is required'
                     })}
+                    disabled={isWorking}
                 >
                     <option disabled value="">Pick UoM</option>
                     {!isLoadingUoM && !uomError && unitOfMeasure.map(row => (
@@ -143,6 +146,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     })}
                     className="input input-bordered w-full" 
                     placeholder="Enter type"
+                    disabled={isWorking}
                 />
                 {errors.type && <div className='text-error text-sm'>{errors.type.message}</div>}
             </div>
@@ -157,6 +161,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     type="file"     
                     accept='image/*'
                     className="file-input file-input-bordered w-full"
+                    disabled={isWorking}
                 />
                 {errors.image && <div className='text-error text-sm'>{errors.image.message}</div>}
             </div>
@@ -169,6 +174,7 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
                     {...register('assigned_to', {
                         required: 'Assigned to is required'
                     })}
+                    disabled={isWorking}
                 >
                     <option disabled value="">Pick assigned to</option>
                     {!isLoadingUsers && !usersError && users.map(user => (

@@ -23,3 +23,12 @@ aside a:hover,
 summary:hover {
   @apply bg-primary/10 !important;
 }
+
+
+/* option:checked  {
+  background: red;
+}
+
+option:hover {
+  background: red;
+} */

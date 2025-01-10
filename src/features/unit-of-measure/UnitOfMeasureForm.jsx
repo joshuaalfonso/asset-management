@@ -70,6 +70,7 @@ export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter code"
+                        disabled={isWorking}
                     />
                     {errors?.uomCode && <span className='text-error text-sm'>{errors?.uomCode.message}</span>}
                 </div>
@@ -83,6 +84,7 @@ export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter name"
+                        disabled={isWorking}
                     />
                     {errors?.uomName && <span className='text-error text-sm'>{errors?.uomName.message}</span>}
                 </div>

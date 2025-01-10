@@ -66,8 +66,14 @@ const SideBar = () => {
                                 </li>
                                 <li>
                                     <NavLink to="/category">
-                                        <i className="fi fi-rs-category flex" style={{ fontSize: '17px' }}></i>
+                                        <i className="fi fi-rs-tags flex" style={{ fontSize: '17px' }}></i>
                                         <span className="tracking-wide">Category</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/department">
+                                        <i className="fi fi-rs-department-structure flex" style={{ fontSize: '17px' }}></i>
+                                        <span className="tracking-wide">Department</span>
                                     </NavLink>
                                 </li>
                             </ul>

@@ -74,6 +74,7 @@ const CategoryForm = ({rowToEdit = {}, onCloseModal}) => {
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter category name"
+                        disabled={isWorking}
                     />
                     {errors?.categoryName && <span className='text-error text-sm'>{errors?.categoryName.message}</span>}
                 </div>
