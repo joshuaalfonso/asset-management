@@ -9,7 +9,7 @@ export const getPurchaseRequest = async () => {
         const response = await client.collection('purchaseRequest').getFullList({
             sort: 'created',
             // requestKey: null,
-            expand: 'purchaseRequestItems_via_purchaseRequestId, purchaseRequestItems_via_purchaseRequestId.item'
+            expand: 'purchaseRequestItems_via_purchaseRequestId, purchaseRequestItems_via_purchaseRequestId.item, purchaseRequestItems_via_purchaseRequestId.item.unitOfMeasureId, purchaseRequestItems_via_purchaseRequestId.item.categoryId'
         });
 
         return response;

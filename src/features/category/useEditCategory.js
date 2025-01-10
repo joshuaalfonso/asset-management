@@ -14,7 +14,7 @@ export const useEditCategory = () => {
             queryClient.invalidateQueries({
                 queryKey: ['category']
             });
-            toast.success('Successfully Edited!');
+            toast.success('Successfully Updated!');
         },
         onError: (err) => {
             console.log(err);

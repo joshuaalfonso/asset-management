@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../../services/apiCategory";
 import { toast } from "sonner";
 import { useEditCategory } from "./useEditCategory";
+import Button from "../../ui/Button";
 
 
 
@@ -78,14 +79,19 @@ const CategoryForm = ({rowToEdit = {}, onCloseModal}) => {
                 </div>
 
                 <div className="flex justify-end items-center gap-3">
-                    <button className="btn" type='reset' onClick={() => onCloseModal?.()} disabled={isWorking}>
-                        Cancel
-                    </button>
+                   
+                    <Button 
+                        btnType="cancel" 
+                        onClick={onCloseModal} 
+                        isWorking={isWorking}
+                    />
 
-                    <button className="btn btn-primary text-base-300" type='submit' disabled={isWorking}>
-                        {isWorking && <span className="loading loading-spinner"></span>}
-                        {isEditSession ? 'Apply changes' : 'Create'}
-                    </button>
+                    <Button 
+                        btnType="submit" 
+                        isWorking={isWorking} 
+                        isEditSession={isEditSession}
+                    />
+
                 </div>
 
             </form>

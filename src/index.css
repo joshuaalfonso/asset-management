@@ -14,9 +14,9 @@ aside a {
 }
 
 aside a.active {
-  @apply bg-primary/10 !important;
-  @apply border-solid border border-primary !important;
-  /* @apply text-primary !important; */
+  @apply bg-primary/5 !important;
+  /* @apply border-solid border border-primary !important; */
+  @apply text-primary !important;
 }
 
 aside a:hover,

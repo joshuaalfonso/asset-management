@@ -5,6 +5,7 @@ import useUsers from "../users/useUsers";
 import { toast } from "sonner";
 import { useCategory } from "../category/useCategory";
 import { useUnitOfMeasure } from "../unit-of-measure/useUnitOfMeasure";
+import Button from "../../ui/Button";
 
 
 // empty object default value
@@ -180,21 +181,17 @@ const CreateConsumableForm = ({ rowToEdit = {}, onCloseModal }) => {
 
             <div className="flex justify-end gap-2">
 
-                <button 
-                    className={`btn  `} 
-                    type='reset' 
-                    disabled={isWorking}
-                    onClick={() => onCloseModal?.()}
-                >Cancel</button>
+                <Button 
+                    btnType="cancel" 
+                    onClick={onCloseModal} 
+                    isWorking={isWorking}
+                />
 
-                <button 
-                    className={`btn btn-primary text-base-300 ${isWorking && 'cursor-not-allowed'}`} 
-                    type='submit' 
-                    disabled={isWorking}
-                >
-                        {isWorking && <span className="loading loading-spinner"></span>}
-                        {isEditSession ? 'Apply changes' : 'Submit'}
-                </button>
+                <Button 
+                    btnType="submit" 
+                    isWorking={isWorking} 
+                    isEditSession={isEditSession}
+                />
 
             </div>
 

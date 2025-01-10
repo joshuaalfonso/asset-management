@@ -87,14 +87,15 @@ const PurchaseRequestRow = ({row, index}) => {
                                     name: itemName, 
                                     type,
                                     collectionId: itemCollectionId, 
+                                    expand
                                 } = prItems?.expand?.item;
 
                                 const fileUrl = `${url}api/`;
 
                                 return (
                                     <tr key={prId} className="">            
-                                        <td className="flex justify-between items-center bg-base-100 rounded-xl p-3">
-                                            <div className="flex gap-3">
+                                        <td className="grid grid-cols-4 items-center bg-base-100 rounded-xl p-3">
+                                            {/* <div className="flex gap-3">
                                                 <img 
                                                     src={`${fileUrl}files/${itemCollectionId}/${itemId}/${image}`} 
                                                     width={50} 
@@ -103,12 +104,27 @@ const PurchaseRequestRow = ({row, index}) => {
                                                 />
                                                 <div className="flex flex-col justify-between">
                                                     <span className="font-semibold tracking-wide">{itemName}</span>
-                                                    <span  className="text-xs">{type}</span>
+                                                    <span  className="text-xs">{expand?.categoryId?.categoryName}</span>
+                                                </div>
+                                            </div> */}
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle h-12 w-12">
+                                                        <img src={`${fileUrl}files/${itemCollectionId}/${itemId}/${image}`}/>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="font-bold"> {itemName} </div>
+                                                    <div className="flex items-center gap-2 text-sm opacity-50">
+                                                        <i className="fi fi-rr-tags flex"></i>
+                                                        {expand?.categoryId?.categoryName}
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <span>{quantity}</span>
-                                            <span>{unitOfMeasure}</span>
+                                            <span>{expand?.unitOfMeasureId?.uomCode}</span>
                                             <span>{unitPrice}</span>
                                         </td>
                                         

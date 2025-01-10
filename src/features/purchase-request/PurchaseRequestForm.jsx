@@ -4,6 +4,7 @@ import useConsumables from "../Consumables/useConsumables";
 import { useCreatePurchaseRequest } from "./useCreatePurchaseRequest";
 import { useEditPurchaseRequest } from "./useEditPurchaseRequest";
 import { useEffect } from "react";
+import Button from "../../ui/Button";
 
 
 const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
@@ -217,7 +218,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
                                 </td>
 
                                 <td>
-                                    <button type="button" className="btn hover:bg-error hover:text-white" onClick={() => remove(index)}>
+                                    <button type="button" className="btn hover:bg-error/5 hover:border-error text-error" onClick={() => remove(index)}>
                                         <i className="fi fi-rr-trash text-xl flex"></i>
                                     </button>
                                 </td>
@@ -231,7 +232,7 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
             <div className="flex justify-start">
                 <button 
                     type="button" 
-                    className="btn hover:bg-primary hover:text-white" 
+                    className="btn text-primary hover:bg-primary/5 hover:border-primary" 
                     onClick={() => append({ item: '', quantity: '', unitPrice: '' })}
                 >
                     <i className="fi fi-rr-plus-small flex text-2xl"></i>
@@ -264,23 +265,17 @@ const PurchaseRequestForm = ({rowToEdit = {}, onCloseModal}) => {
 
             <div className="flex justify-end gap-3">
 
-                <button 
-                    className={`btn  `} 
-                    type='reset' 
-                    onClick={() => onCloseModal?.()}
-                    disabled={isWorking}
-                > 
-                    Cancel
-                </button>
+                <Button 
+                    btnType="cancel" 
+                    onClick={onCloseModal} 
+                    isWorking={isWorking}
+                />
 
-                <button 
-                    className={`btn btn-primary text-base-300 `} 
-                    type='submit' 
-                    disabled={isWorking}
-                >
-                    {isWorking && <span className="loading loading-spinner"></span>}
-                    {isEditSession ? 'Apply changes' : 'Create'}
-                </button>
+                <Button 
+                    btnType="submit" 
+                    isWorking={isWorking} 
+                    isEditSession={isEditSession}
+                />
 
             </div>
 

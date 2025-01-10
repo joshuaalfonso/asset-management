@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUnitOfMeasure } from "../../services/apiUnitOfMeasure";
 
-
-
 export const useUnitOfMeasure = () => {
 
     const { 

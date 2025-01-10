@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form"
 import { useCreateUnitOfMeasure } from "./useCreateUnitOfMeasure";
 import { useEditUnitOfMeasure } from "./useEditUnitOfMeasure";
+import Button from "../../ui/Button";
 
 
 export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
@@ -87,14 +88,19 @@ export const UnitOfMeasureForm = ({rowToEdit = {}, onCloseModal}) => {
                 </div>
 
                 <div className="flex justify-end items-center gap-3">
-                    <button className="btn" type='reset' onClick={() => onCloseModal()} disabled={isWorking}>
-                        Cancel
-                    </button>
 
-                    <button className="btn btn-primary text-base-300" type='submit' disabled={isWorking}>
-                        {isWorking && <span className="loading loading-spinner"></span>}
-                        {isEditSession ? 'Apply changes' : 'Create'}
-                    </button>
+                    <Button 
+                        btnType="cancel" 
+                        onClick={onCloseModal} 
+                        isWorking={isWorking}
+                    />
+
+                    <Button 
+                        btnType="submit" 
+                        isWorking={isWorking} 
+                        isEditSession={isEditSession}
+                    />
+
                 </div>
 
             </form>

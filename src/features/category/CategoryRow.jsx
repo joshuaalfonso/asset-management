@@ -1,3 +1,4 @@
+import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Modal from "../../ui/Modal";
 import CategoryForm from "./CategoryForm";
@@ -40,6 +41,8 @@ const CategoryRow = ({row, index}) => {
                             onConfirm={() => deleteCategoryMutation(row.id)}
                         />
                     </Modal.Window>
+
+                    
 
                 </Modal>
 
