@@ -21,21 +21,46 @@ export const getDepartment = async () => {
 } 
 
 
-export const createDepartment = async (data) => {
+export const createEditDepartment = async (newDepartment, id) => {
+
+    let query = client.collection('department');
+    let response = null;
 
     try {
 
-        const response = await client.collection('department').create(data);
+        if (id) response = await query.update(id, newDepartment);
 
-        if (response.code === 404) throw new Error('An error occured');
+        if (!id) response = await client.collection('department').create(newDepartment);
+
+        if (response.code === 404) throw new Error(response.message);
 
         return response;
 
     }
 
-    catch (err) {
-        console.error('Creating department error', err);
-        throw new Error(err.message || 'An error occured while creating department');
+    catch (error) {
+        console.log(error);
+        throw new Error(error.message || 'An error occured');
     }
+
+}
+
+export const deleteDepartment = async (id) => {
+
+    try {
+
+        const response = await client.collection('department').delete(id);
+
+        if (response.code === 404) throw new Error(response.message);
+
+        return response;
+
+    }
+
+    catch (error) {
+        console.log(error);
+        throw new Error(error.message || 'An error occured');
+    }
+
 
 }

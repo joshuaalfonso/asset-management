@@ -10,6 +10,7 @@ import { Toaster } from 'sonner'
 import { UnitOfMeasure } from "./pages/UnitOfMeasure";
 import Category from "./pages/Category";
 import Department from "./pages/Department";
+import Employee from "./pages/Employee";
 
 
 const queryClient = new QueryClient({
@@ -25,7 +26,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
 
             <ReactQueryDevtools initialIsOpen="false" />
-            <Toaster position="top-center" richColors/>
+            <Toaster position="top-right" richColors/>
             
             <BrowserRouter>
                 <Routes>
@@ -38,6 +39,7 @@ const App = () => {
                         <Route path="consumables" element={<Consumables />}/>
                         <Route path="unit-of-measure" element={<UnitOfMeasure />}/>
                         <Route path="category" element={<Category />}/>
+                        <Route path="employee" element={<Employee />}/>
                         <Route path="department" element={<Department />}/>
 
                     </Route>

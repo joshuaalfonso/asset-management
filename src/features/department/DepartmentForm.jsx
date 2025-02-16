@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Button from "../../ui/Button";
-import { createDepartment } from "../../services/apiDepartment";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { useCreateDepartment } from "./useCreateDepartment";
+import { useEditDepartment } from "./useEditDepartment";
 
 
 const DepartmentForm = ( {rowToEdit = {}, onCloseModal} ) => {
@@ -11,45 +10,59 @@ const DepartmentForm = ( {rowToEdit = {}, onCloseModal} ) => {
 
     const isEditSession = Boolean(editId);
 
-
-    const queryClient = useQueryClient();
-
-
-    const {register, handleSubmit, formState: errors, reset} = useForm();
-
     const {
-        mutate: createDepartmentMutation,
-        isPending: isCreating
-    } = useMutation({
-        mutationFn: createDepartment,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['department']
-            })
-            toast.success('Successfully Created');
-        }
-    })
+        register, 
+        handleSubmit, 
+        formState: {errors}, 
+        reset
+    } = useForm({
+        defaultValues: isEditSession ? { departmentName } : {}
+    });
 
+    const { createDepartmentMutation, isCreating } = useCreateDepartment();
+    const { editDepartmentMutation, isEditing } = useEditDepartment();
+    const isWorking = isCreating || isEditing;
 
-    const onSubmit = (data) => {
+    const onSubmit = (newDepartment) => {
         // console.log(data);
 
-        createDepartmentMutation(
-            data,
-            {
-                onSuccess: () => {
-                    reset();
-                    onCloseModal();
+        if (isEditSession) {
+            editDepartmentMutation(
+                {
+                    editId,
+                    newDepartment
+                },
+                {
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal();
+                    }
                 }
-            }
-        )
+            )
+        } else {
+            createDepartmentMutation(
+                newDepartment,
+                {
+                    onSuccess: () => {
+                        reset();
+                        onCloseModal();
+                    }
+                }
+            )
+        }
     }
 
     return (
         <div className="form-control gap-6">
-            <h3 className="font-bold text-lg">  {isEditSession ? 'Edit Form' : 'Create Form'}  </h3>
 
-            <form className="form-control gap-5" onSubmit={handleSubmit(onSubmit)}>
+            <h3 className="font-bold text-lg">  
+                {isEditSession ? 'Edit Form' : 'Create Form'} 
+            </h3>
+
+            <form 
+                className="form-control gap-5" 
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <div className="form-control gap-2">
                     <label className="label-text">Department Name</label>
                     <input 
@@ -59,8 +72,13 @@ const DepartmentForm = ( {rowToEdit = {}, onCloseModal} ) => {
                         type="text"     
                         className="input input-bordered w-full" 
                         placeholder="Enter category name"
+                        disabled={isWorking}
                     />
-                    {errors?.departmentName && <span className='text-error text-sm'>{errors?.departmentName.message}</span>}
+                    {errors?.departmentName && (
+                        <span className='text-error text-sm'>
+                            {errors?.departmentName.message}
+                        </span>
+                    )}
                 </div>
 
                 <div className="flex justify-end items-center gap-3">
@@ -68,11 +86,13 @@ const DepartmentForm = ( {rowToEdit = {}, onCloseModal} ) => {
                     <Button 
                         btnType="cancel" 
                         onClick={onCloseModal} 
+                        isWorking={isWorking}
                     />
 
                     <Button 
                         btnType="submit" 
                         isEditSession={isEditSession}
+                        isWorking={isWorking}
                     />
 
                 </div>

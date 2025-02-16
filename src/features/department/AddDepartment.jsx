@@ -9,11 +9,8 @@ const AddDepartment = () => {
         <Modal>
 
             <Modal.Open opens='zxc'>
-                {/* <Button btnType="primary"> 
+                <button className="btn btn-primary text-base-300">
                     Add Department
-                </Button> */}
-                <button className="btn">
-                    asd
                 </button>
             </Modal.Open>
 

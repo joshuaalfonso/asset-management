@@ -7,7 +7,7 @@ export const getUnitOfMeasure = async () => {
 
         const response = client.collection('unitOfMeasure').getFullList();
 
-        if (response.code === 404) throw error(response.message);
+        if (response.code === 404) throw new Error(response.message);
 
         return response;
 

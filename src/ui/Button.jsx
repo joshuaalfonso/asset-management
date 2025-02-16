@@ -2,9 +2,6 @@
 
 
 
-
-
-
 const Button = ({btnType = '', onClick, isWorking, isEditSession, children}) => {
     
     if (btnType == 'cancel') return (
@@ -26,7 +23,7 @@ const Button = ({btnType = '', onClick, isWorking, isEditSession, children}) => 
     )
 
     if (btnType == 'primary') return (
-        <button className="btn btn-primary text-base-300"  disabled={isWorking}>
+        <button className="btn btn-primary text-base-300">
             {children}
         </button>
     )
